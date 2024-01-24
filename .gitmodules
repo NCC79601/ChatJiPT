@@ -1,0 +1,6 @@
+[submodule "backend"]
+	path = backend
+	url = https://github.com/NCC79601/Langchain-Chatchat.git
+[submodule "frontend"]
+	path = frontend
+	url = https://github.com/NCC79601/wxauto.git
