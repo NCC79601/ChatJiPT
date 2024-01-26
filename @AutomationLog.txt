@@ -1,0 +1,11 @@
+2024-01-26 03:17:18.050 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:17:58.081 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:18:29.644 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:27:34.864 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:27:34.877 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:27:43.702 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:27:43.714 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:28:06.557 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:28:06.570 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:29:07.923 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
+2024-01-26 03:29:07.935 wxauto.py[109] _split -> Find Control Timeout(0s): {ControlType: ButtonControl}
