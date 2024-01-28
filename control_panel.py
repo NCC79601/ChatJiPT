@@ -1,7 +1,6 @@
 import tkinter as tk
 from pynput import keyboard
 import subprocess
-import threading
 import os
 from PIL import Image, ImageTk
 
@@ -52,6 +51,15 @@ def on_button_click():
     global process
     button.config(state='disabled', text='按G停止运行')
     process = subprocess.Popen(['python', os.path.join(os.getcwd(), 'main.py')])
+
+# 定义一个窗口关闭事件处理函数
+def on_close():
+    if process.poll() is None:
+        process.terminate()
+    root.destroy()
+
+# 设置窗口关闭事件处理函数
+root.protocol('WM_DELETE_WINDOW', on_close)
 
 # 在窗口上添加一个按钮
 button = tk.Button(root, text='开始运行', command=on_button_click)

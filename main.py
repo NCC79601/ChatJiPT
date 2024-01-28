@@ -1,5 +1,5 @@
 from wxdetect import WXWindow
-from post import post
+from api.post import post
 import time
 from database import database_service as db
 

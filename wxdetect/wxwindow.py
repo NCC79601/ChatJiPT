@@ -6,6 +6,7 @@ import pyperclip
 from tracker import PositionTracker, ClickTracker
 from rapidocr_onnxruntime import RapidOCR
 import os
+from input_converter import InputConverter
 
 current_path = os.path.dirname(os.path.abspath(__file__))
 
@@ -349,12 +350,16 @@ class WXWindow:
         }
 
     def send_message(self, message, press_enter=False):
-        pyperclip.copy(message)
+        # pyperclip.copy(message)
 
         target_pos = self.position_tracker.get_abs_pos("chatbox_inputbox_origin", 50, 50)
         self.click_tracker.add_point(*target_pos)
         pyautogui.moveTo(*target_pos, duration=0.3)
         pyautogui.click(*target_pos, button='left')
-        pyautogui.hotkey('ctrl', 'v')
+        # pyautogui.hotkey('ctrl', 'v')
+
+        input_converter = InputConverter()
+        input_converter.perform_type(message, interval=0.05, chunk_size=20)
+
         if press_enter:
             pyautogui.press('enter')
