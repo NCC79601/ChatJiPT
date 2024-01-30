@@ -37,7 +37,7 @@ class InputConverter:
             else:
                 if direct_char != '':
                     sequence.append({
-                        'type': 'copy_paste',
+                        'type': 'direct_input',
                         'value': direct_char
                     })
                     direct_char = ''
@@ -66,4 +66,5 @@ class InputConverter:
                 pyperclip.copy(item['value'])
                 pyautogui.hotkey('ctrl', 'v')
             else:
+                print('unknown type!')
                 raise Exception('Unknown type: ' + item['type'])
