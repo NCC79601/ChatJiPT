@@ -8,6 +8,9 @@ class InputConverter:
 
 
     def convert(self, input_str, chunk_size):
+        
+        input_str = input_str.replace('，', ', ')
+
         sequence = []
         copy_char = ''
         direct_char = ''

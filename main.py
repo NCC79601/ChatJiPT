@@ -2,12 +2,17 @@ from wxdetect import WXWindow
 from api.post import post
 import time
 from database import database_service as db
+import datetime
 
 db.init()
 
 wx = WXWindow()
 
 while True:
+
+    current_time = datetime.datetime.now()
+    print("\033[92m", current_time, "\033[0m")
+
     wx.get_window()
     
     chatbox = wx.get_current_chatbox_content()

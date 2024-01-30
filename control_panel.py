@@ -31,6 +31,9 @@ text.pack(pady=10)  # 设置垂直内边距为 10 像素
 # 定义一个全局变量来表示是否停止运行
 stop = False
 
+# 定义一个全局变量来表示子进程
+process = None
+
 # 定义一个键盘监听器
 def on_press(key):
     global stop
@@ -40,6 +43,12 @@ def on_press(key):
             if process.poll() is None:
                 process.terminate()
             button.config(state='normal', text='开始运行')
+        elif key.char == keyboard.Key.esc:
+            stop = True
+            if process.poll() is None:
+                process.terminate()
+            root.destroy()
+            exit(0)
     except AttributeError:
         pass
 
@@ -54,7 +63,7 @@ def on_button_click():
 
 # 定义一个窗口关闭事件处理函数
 def on_close():
-    if process.poll() is None:
+    if process is not None and process.poll() is None:
         process.terminate()
     root.destroy()
 

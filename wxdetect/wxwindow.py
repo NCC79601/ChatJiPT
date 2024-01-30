@@ -12,7 +12,11 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 
 class WXWindow:
 
-    def __init__(self):
+    def __init__(self, x=0, y=0, w=0, h=0):
+        self.x = x
+        self.y = y
+        self.w = w
+        self.h = h
         self.least_ratio = 1 / 5
         self.click_tracker = ClickTracker()
     
@@ -102,34 +106,36 @@ class WXWindow:
         img_gray = cv2.cvtColor(img.copy(), cv2.COLOR_BGR2GRAY)       
         img_pyramid = [img_gray]
 
-        # 加载微信右上角四大金刚按钮的照片 (1080p)，进行模式识别
-        template = cv2.imread(os.path.join(current_path, 'pattern/top_right_pattern_1080p.png'), 0)
-        w, h = template.shape[::-1]
-
-        # 创建模式图像金字塔，以 0.5 的比例逐级缩小
-        template_pyramid = [template]
-        for i in range(2):
-            template_pyramid.append(cv2.pyrDown(template_pyramid[-1]))
-
-        # 对 1440p 分辨率重复一遍
-        template = cv2.imread(os.path.join(current_path, 'pattern/top_right_pattern_1440p.png'), 0)
-        template_pyramid.append(template)
-        for i in range(2):
-            template_pyramid.append(cv2.pyrDown(template_pyramid[-1]))
+        # 加载微信右上角四大金刚按钮的照片 (1080p, 1440p)，进行模式识别
+        templates = []
+        templates.append(cv2.imread('./wxdetect/pattern/top_right_pattern_1080p.png', 0))
+        templates.append(cv2.imread('./wxdetect/pattern/top_right_pattern_1440p.png', 0))
 
         rt_xywh = None
 
-        # 逐级进行模式识别
-        for i, (p, t) in enumerate(zip(img_pyramid, template_pyramid)):
-            res = cv2.matchTemplate(p, t, cv2.TM_CCOEFF_NORMED)
-            threshold = 0.9
-            loc = np.where(res >= threshold)
-            for pt in zip(*loc[::-1]):
-                scale = 2 ** i
-                # 画出识别到的区域
-                if rt_xywh == None:
-                    rt_xywh = (pt[0]*scale, pt[1]*scale, w*scale, h*scale)
-                cv2.rectangle(marked_img, (pt[0]*scale, pt[1]*scale), ((pt[0] + w)*scale, (pt[1] + h)*scale), (255, 0, 0), 2)
+        for template in templates:
+
+            w, h = template.shape[::-1]
+
+            # 创建模式图像金字塔，以 0.5 的比例逐级缩小
+            template_pyramid = [template]
+            for i in range(2):
+                template_pyramid.append(cv2.pyrDown(template_pyramid[-1]))
+
+            # 逐级进行模式识别
+            for i, (p, t) in enumerate(zip(img_pyramid, template_pyramid)):
+                res = cv2.matchTemplate(p, t, cv2.TM_CCOEFF_NORMED)
+                threshold = 0.7
+                loc = np.where(res >= threshold)
+                for pt in zip(*loc[::-1]):
+                    scale = 2 ** i
+                    # 画出识别到的区域
+                    if rt_xywh == None:
+                        rt_xywh = (pt[0]*scale, pt[1]*scale, w*scale, h*scale)
+                    cv2.rectangle(marked_img, (pt[0]*scale, pt[1]*scale), ((pt[0] + w)*scale, (pt[1] + h)*scale), (255, 0, 0), 2)
+            
+            if rt_xywh != None:
+                break
 
         if rt_xywh == None:
             print('未寻找到微信右上角四大金刚按钮，退出')
@@ -145,34 +151,36 @@ class WXWindow:
         self.w = rt_x - sb_x
         self.h = sb_h
 
-        # 加载 chatbox 工具栏的照片 (1080p)，进行模式识别
-        template = cv2.imread(os.path.join(current_path, 'pattern/chatbox_toolbar_1080p.png'), 0)
-        w, h = template.shape[::-1]
-
-        # 创建模式图像金字塔，以 0.5 的比例逐级缩小
-        template_pyramid = [template]
-        for i in range(2):
-            template_pyramid.append(cv2.pyrDown(template_pyramid[-1]))
-
-        # 对 1440p 分辨率重复一遍
-        template = cv2.imread(os.path.join(current_path, 'pattern/top_right_pattern_1440p.png'), 0)
-        template_pyramid.append(template)
-        for i in range(2):
-            template_pyramid.append(cv2.pyrDown(template_pyramid[-1]))
+        # 加载 chatbox 工具栏的照片 (1080p, 1440p)，进行模式识别
+        templates = []
+        templates.append(cv2.imread('./wxdetect/pattern/chatbox_toolbar_1080p.png', 0))
+        templates.append(cv2.imread('./wxdetect/pattern/chatbox_toolbar_1440p.png', 0))
 
         cb_tb_xywh = None
 
-        # 逐级进行模式识别
-        for i, (p, t) in enumerate(zip(img_pyramid, template_pyramid)):
-            res = cv2.matchTemplate(p, t, cv2.TM_CCOEFF_NORMED)
-            threshold = 0.9
-            loc = np.where(res >= threshold)
-            for pt in zip(*loc[::-1]):
-                scale = 2 ** i
-                # 画出识别到的区域
-                if cb_tb_xywh == None:
-                    cb_tb_xywh = (pt[0]*scale, pt[1]*scale, w*scale, h*scale)
-                cv2.rectangle(marked_img, (pt[0]*scale, pt[1]*scale), ((pt[0] + w)*scale, (pt[1] + h)*scale), (255, 0, 0), 2)
+        for template in templates:
+
+            w, h = template.shape[::-1]
+
+            # 创建模式图像金字塔，以 0.5 的比例逐级缩小
+            template_pyramid = [template]
+            for i in range(2):
+                template_pyramid.append(cv2.pyrDown(template_pyramid[-1]))
+
+            # 逐级进行模式识别
+            for i, (p, t) in enumerate(zip(img_pyramid, template_pyramid)):
+                res = cv2.matchTemplate(p, t, cv2.TM_CCOEFF_NORMED)
+                threshold = 0.7
+                loc = np.where(res >= threshold)
+                for pt in zip(*loc[::-1]):
+                    scale = 2 ** i
+                    # 画出识别到的区域
+                    if cb_tb_xywh == None:
+                        cb_tb_xywh = (pt[0]*scale, pt[1]*scale, w*scale, h*scale)
+                    cv2.rectangle(marked_img, (pt[0]*scale, pt[1]*scale), ((pt[0] + w)*scale, (pt[1] + h)*scale), (255, 0, 0), 2)
+            
+            if cb_tb_xywh != None:
+                break
 
         
         # 截取消息列表的图片
@@ -218,14 +226,14 @@ class WXWindow:
         self.chatbox_content_img = chatbox_content_img
 
         # 对方发送的最后一条消息
-        last_msg_from_ta_detect_x = 1 + (34 + 30 + 10 + 5)
+        last_msg_from_ta_detect_x = int(self.unit * (1 + (34 + 30 + 10 + 5)))
         msg_from_ta_color = np.array([0xF5, 0xF5, 0xF5])
-        last_msg_from_ta_detect_y = 61
+        last_msg_from_ta_detect_y = int(self.unit * 61)
 
         precolor = msg_from_ta_color
         detect_cnt = 0
 
-        for i in range(chatbox_img.shape[0] - 1, 60-1, -1):
+        for i in range(chatbox_img.shape[0] - 1, int(self.unit * (60-1)), -1):
             if (chatbox_img[i, last_msg_from_ta_detect_x] != precolor).all():
                 detect_cnt += 1
                 precolor = chatbox_img[i, last_msg_from_ta_detect_x]
@@ -236,8 +244,8 @@ class WXWindow:
                     print(f'detected: {last_msg_from_ta_detect_y}')
                 break
 
-        if last_msg_from_ta_detect_y > 61 + 25:
-            last_msg_from_ta_detect_y -= 25
+        if last_msg_from_ta_detect_y > int(self.unit * (61 + 25)):
+            last_msg_from_ta_detect_y -= int(self.unit * (25))
 
         name_roi = (last_msg_from_ta_detect_y, int(self.unit * 70), int(self.unit * 24), int(self.unit * 200))
         name_img = chatbox_img[name_roi[0]:name_roi[0]+name_roi[2], name_roi[1]:name_roi[1]+name_roi[3]]
@@ -352,7 +360,7 @@ class WXWindow:
     def send_message(self, message, press_enter=False):
         # pyperclip.copy(message)
 
-        target_pos = self.position_tracker.get_abs_pos("chatbox_inputbox_origin", 50, 50)
+        target_pos = self.position_tracker.get_abs_pos("chatbox_inputbox_origin", int(self.unit * 50), int(self.unit * 50))
         self.click_tracker.add_point(*target_pos)
         pyautogui.moveTo(*target_pos, duration=0.3)
         pyautogui.click(*target_pos, button='left')
