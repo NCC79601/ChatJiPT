@@ -4,3 +4,6 @@
 [submodule "frontend"]
 	path = frontend
 	url = https://github.com/NCC79601/wxauto.git
+[submodule "autopinyin"]
+	path = autopinyin
+	url = https://github.com/NCC79601/autopinyin.git
