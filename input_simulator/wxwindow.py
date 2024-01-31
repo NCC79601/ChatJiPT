@@ -64,11 +64,16 @@ class WXWindow:
 
         self.click_target = (int(cb_tb_x + cb_tb_w * 1.25), cb_tb_y + cb_tb_h * 2)
 
+    
 
-    def send_message(self, message, press_enter=False):
+    def click_input_box(self):
         click_target = self.click_target
         pyautogui.moveTo(*click_target, duration=0.3)
         pyautogui.click(*click_target, button='left')
+
+
+    def send_message(self, message, press_enter=False):
+        self.click_input_box()
 
         input_converter = InputConverter()
         input_converter.perform_type(message, interval=0.05, chunk_size=20, debug_output=True)

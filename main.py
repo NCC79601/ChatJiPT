@@ -1,12 +1,15 @@
 from input_simulator import WXWindow
 from frontend.wxauto import WeChat
+import pyautogui
 from api.post import post
+from autopinyin import AutoPinyin
 from database import database_service as db
 from config import config
 import datetime
 import time
 
 wx = WeChat()
+apy = AutoPinyin()
 wxwindow = WXWindow()
 db.init()
 
@@ -40,19 +43,25 @@ while True:
     print('current query:')
     print(query)
 
-    print('generating response...')
-    response_data = post(query=query, history=history)
-
     wxwindow.get_window()
-    wxwindow.send_message(response_data['answer'], press_enter=True)
+    # wxwindow.send_message(response_data['answer'], press_enter=True)
+    wxwindow.click_input_box()
 
+    # apy.auto_input(response_data['answer'])
+    print('generating response...')
+    response_data = post(query=query, history=history, typein_function=apy.auto_input)
+    pyautogui.press('enter')
+
+    if response_data == '':
+        continue
+    
     history.append({
         "role": "user",
         "content": query
     })
     history.append({
         "role": "assistant",
-        "content": response_data['answer']
+        "content": response_data
     })
 
     db.update(who, {'history': history[-10:]}) # 只保留最后10个
