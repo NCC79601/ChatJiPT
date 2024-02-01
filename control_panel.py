@@ -1,6 +1,6 @@
 import tkinter as tk
-from pynput import keyboard
 import subprocess
+import sys
 import os
 from PIL import Image, ImageTk
 
@@ -35,30 +35,26 @@ stop = False
 process = None
 
 # 定义一个键盘监听器
-def on_press(key):
-    global stop
-    try:
-        if key.char == 'g':
-            stop = True
-            if process.poll() is None:
-                process.terminate()
-            button.config(state='normal', text='开始运行')
-        elif key.char == keyboard.Key.esc:
-            stop = True
-            if process.poll() is None:
-                process.terminate()
-            root.destroy()
-            exit(0)
-    except AttributeError:
-        pass
+import keyboard
 
-listener = keyboard.Listener(on_press=on_press)
-listener.start()
+# 定义一个键盘监听器
+def on_press(event):
+    global stop
+    if event.name == 'ctrl':
+        stop = True
+        if process.poll() is None:
+            process.terminate()
+        button.config(state='normal', text='开始运行')
+    elif event.name == 'esc':
+        print('exiting...')
+        on_close()
+
+keyboard.on_press(on_press)
 
 # 定义一个按钮点击事件处理函数
 def on_button_click():
     global process
-    button.config(state='disabled', text='按G停止运行')
+    button.config(state='disabled', text='按 CTRL 停止运行')
     process = subprocess.Popen(['python', os.path.join(os.getcwd(), 'main.py')])
 
 # 定义一个窗口关闭事件处理函数

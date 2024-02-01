@@ -17,7 +17,7 @@ def post(query, history=[], typein_function=None):
         "history": history,
         "stream": True,
         "model_name": "chatglm3-6b",
-        "temperature": 0.7,
+        "temperature": 0.3,
         "max_tokens": 0,
         "prompt_name": "ChatJiPT"
     }
@@ -34,8 +34,8 @@ def post(query, history=[], typein_function=None):
             decoded_line = line.decode('utf-8')
             # print(f'response: {decoded_line}')
             response_data = json.loads(decoded_line[6:]) # 过滤掉开头的 "data: " 字符串
-            # 处理响应数据
             
+            # 处理响应数据
             if "answer" not in response_data:
                 continue
             print(f'{response_data["answer"]}')
