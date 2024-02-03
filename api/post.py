@@ -1,9 +1,9 @@
 import requests
 import json
 
-knowledge_base_chat_url = "http://localhost:7862/chat/knowledge_base_chat"
+knowledge_base_chat_url = "http://localhost:7861/chat/knowledge_base_chat"
 
-chat_url = "http://localhost:7862/chat/chat"
+chat_url = "http://localhost:7861/chat/chat"
 
 headers = {"Content-Type": "application/json"}
 
