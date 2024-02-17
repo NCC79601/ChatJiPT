@@ -13,11 +13,12 @@ def post(query, history=[], typein_function=None):
         "query": query,
         "knowledge_base_name": "thu-knowledge",
         "top_k": 3,
-        "score_threshold": 1.0,
+        "score_threshold": 0.8,
         "history": history,
         "stream": True,
-        "model_name": "chatglm3-6b",
-        "temperature": 0.3,
+        "model_name": "Qwen1.5-14B-Chat-GPTQ-Int8",
+        # "model_name": "Yi-34B-Chat-4bits",
+        "temperature": 0.5,
         "max_tokens": 0,
         "prompt_name": "ChatJiPT"
     }
