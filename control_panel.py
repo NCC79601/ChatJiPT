@@ -8,7 +8,7 @@ from PIL import Image, ImageTk
 root = tk.Tk()
 root.title('小姬の控制面板')
 root.geometry('300x300+300+300')  # 设置窗口大小和位置
-root.attributes('-topmost', True)  # 设置窗口始终在最前面
+# root.attributes('-topmost', True)  # 设置窗口始终在最前面
 root.resizable(False, False)
 root.iconbitmap('img/icon.ico')
 

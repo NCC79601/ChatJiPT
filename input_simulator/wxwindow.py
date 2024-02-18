@@ -62,7 +62,8 @@ class WXWindow:
         cb_tb_w = cb_tb_xywh[2]
         cb_tb_h = cb_tb_xywh[3]
 
-        self.click_target = (int(cb_tb_x + cb_tb_w * 1.25), cb_tb_y + cb_tb_h * 2)
+        self.click_target = (int(cb_tb_x + cb_tb_w * 0.6), cb_tb_y + cb_tb_h * 2)
+        self.click_link_target = (int(cb_tb_x + cb_tb_w * 0.6), cb_tb_y - cb_tb_h * 2)
 
     
 
@@ -70,6 +71,12 @@ class WXWindow:
         click_target = self.click_target
         pyautogui.moveTo(*click_target, duration=0.3)
         pyautogui.click(*click_target, button='left')
+
+    
+    def right_click_last_share_link(self):
+        click_target = self.click_link_target
+        pyautogui.moveTo(*click_target, duration=0.3)
+        pyautogui.rightClick(*click_target)
 
 
     def send_message(self, message, press_enter=False):

@@ -8,6 +8,7 @@ from config import config
 import datetime
 import time
 from commands import detect_and_execute
+from summarizer import get_content
 
 wx = WeChat()
 apy = AutoPinyin()
@@ -58,7 +59,53 @@ while True:
             history = []
         apy.auto_input(result)
         pyautogui.press('enter')
+
+    elif query == '[链接]':
+        print('link detected...')
+        # apy.auto_input('小姬不支持链接消息哦~')
+        # pyautogui.press('enter')
+        wxwindow.right_click_last_share_link()
+        time.sleep(0.1)
+        content = get_content()
+        query = f'''
+        {content}
+        阅读以上文章，并为我总结其要点
+        '''
+
+        apy.auto_input('小姬的总结：')
+        response_data = post(query=query, history=history, typein_function=apy.auto_input)
+        pyautogui.press('enter')
+
+        if response_data == '':
+            continue
+        
+        history.append({
+            "role": "user",
+            "content": '[链接]\n阅读以上文章，并为我总结其要点'
+        })
+        history.append({
+            "role": "assistant",
+            "content": response_data
+        })
+
+
+    elif query == '[图片]':
+        print('image detected...')
+        apy.auto_input('小姬不支持图片消息哦~')
+        pyautogui.press('enter')
+
+    elif query == '[表情]':
+        print('emoji detected...')
+        apy.auto_input('小姬不支持表情消息哦~')
+        pyautogui.press('enter')
+
+    elif query == '[语音]':
+        print('voice detected...')
+        apy.auto_input('语音功能敬请期待~')
+        pyautogui.press('enter')
+
     else:
+        # 正常消息
         # apy.auto_input(response_data['answer'])
         print('generating response...')
         response_data = post(query=query, history=history, typein_function=apy.auto_input)
