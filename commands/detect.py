@@ -1,5 +1,5 @@
-from feedback import FeedbackCommand
-from clear import ClearCommand
+from .feedback import FeedbackCommand
+from .clear import ClearCommand
 
 def detect_and_execute(query, history):
     '''
@@ -11,5 +11,5 @@ def detect_and_execute(query, history):
     commands = [FeedbackCommand(), ClearCommand()]
     for command in commands:
         if command.detect(query):
-            return True, command.execute(history=history)
-    return False, None
+            return True, command.execute(query=query, history=history), command.command_name
+    return False, None, None

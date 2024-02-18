@@ -1,1 +1,1 @@
-from detect import detect_and_execute
+from .detect import detect_and_execute

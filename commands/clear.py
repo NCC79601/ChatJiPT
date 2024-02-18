@@ -1,8 +1,8 @@
-from command_base import CommandBase
+from .command_base import CommandBase
 
 class ClearCommand(CommandBase):
     def __init__(self):
-        super(ClearCommand, self).__init__('clear')
+        super(ClearCommand, self).__init__('clear', keywords=['clear', '清空', '清空历史'])
 
     def execute(self, **kwargs):
         '''

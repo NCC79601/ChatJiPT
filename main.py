@@ -49,13 +49,15 @@ while True:
     # wxwindow.send_message(response_data['answer'], press_enter=True)
     wxwindow.click_input_box()
 
-    is_command, result = detect_and_execute(query, history)
+    is_command, result, command_name = detect_and_execute(query, history)
 
     if is_command:
         print('command detected...')
+        if command_name == 'clear':
+            print('clearing history...')
+            history = []
         apy.auto_input(result)
         pyautogui.press('enter')
-        continue
     else:
         # apy.auto_input(response_data['answer'])
         print('generating response...')
